@@ -1,5 +1,5 @@
 # Minesweeper
-A low graphics version of minesweeper using processing 3 and BRC browser controls
+A low graphics version of minesweeper using (processing 3)[https://processing.org] and (BRC controls)[http://www.micromind.com/processing/brc/BRCWebService.html].
 
 ## How to run the program
 1. First clone the Repository using any of the methods.
