@@ -1,0 +1,51 @@
+TYPE,NOTE,note
+note,LABEL,To change the settings
+note,LABEL,<a href="127.0.0.1:10002">Go to this site</a>
+
+TYPE,TEXT,username
+username,LABEL,First name
+
+TYPE,BUTTON,restart
+
+TYPE,MONITOR,mines
+mines,LABEL,mines remaining
+
+TYPE,MONITOR,time
+time,LABEL,stopwatch
+
+TYPE,NOTE,pb
+pb,LABEL,personal bests
+
+TYPE,MONITOR,pbe
+pbe,LABEL,Easy Personal Best
+
+TYPE,MONITOR,pbm
+pbm,LABEL,Medium Personal Best
+
+TYPE,MONITOR,pbh
+pbh,LABEL,Hard Personal Best
+
+TYPE,MONITOR,pbi
+pbi,LABEL,Insane Personal Best
+
+
+TYPE,RANGE,size
+size,LABEL, size x size tiles
+size,MIN,5
+size,MAX,30
+size,STEP,1
+size,VALUE,16
+
+TYPE,RANGE,mines
+mines,LABEL,number of mines
+mines,MIN,5
+mines,MAX,50
+mines,STEP,1
+mines,VALUE,16
+
+TYPE,DROPDOWN,difficulty
+difficulty,OPTION,E,easy
+difficulty,OPTION,M,medium
+difficulty,OPTION,H,hard
+difficulty,OPTION,I,insane
+difficulty,OPTION,C,custom,selected
