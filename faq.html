@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Minesweeper: About</title>
+  <link rel="stylesheet" href="style.css">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="credits.html">Credits</a></li>
+    <li><a class="selected" href="faq.html">FAQ</a></li>
+    <li><a href="gameplay.html">Gameplay</a></li>
+  </ul>
+</head>
+
+<body>
+    <a id="FAQ">
+        <h2>
+          Frequently Asked Questions:
+        </h2>
+        <p class="q">How does it detect if you are clicking a tile or not?</p>
+        <p>By using the built in built in mousePressed and mouseButton variables, we can determine if the mouse is being pressed and which button is pressed.
+          All we need to do after is to check that the mouse is inside the tile.
+        </p>
+        <p class="q">How is the Personal High Scores saved?</p>
+        <p>The personal high scores are stored on your computer in .txt files called Easy, Medium, Hard, and Insane. When you select a difficulty,
+          The program uses the name of the difficulty to determine which file to change. We used the built in loadStrings() function to load everything in
+          a file into a String array and use the built in String.compareTo() function to check which time is less. Finally, we used the createWriter() function to write
+          the best score into the file.
+        </p>
+        <p class="q">How does the program randomly generate bombs?</p>
+        <p>
+          Before clicking anything, no bombs are generated. This is to make sure that when the user first presses a tile, it is not a bomb.
+          Once a tile is clicked however, the program will randomly generate an x and y coordinate and as long as those coordinates
+          are not the tile clicked or around the tile clicked, the program will set that tile to a bomb. Once all of the bombs are set, the program will go to each tile and search
+          around the tile to check how many bombs are around it.
+        </p>
+      </a>
+</body>
+</html>
