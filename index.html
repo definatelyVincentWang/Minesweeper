@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Minesweeper: About</title>
+  <link rel="stylesheet" href="style.css">
+  <ul>
+    <li class="selected"><a href="#about">About</a></li>
+    <li><a href="#play">Play Now</a></li>
+    <li><a href="#credits">Credits</a></li>
+    <li><a href="#FAQ">FAQ</a></li>
+    <li style="float:right"><a href="https://github.com/definatelyVincentWang/Minesweeper/archive/refs/heads/main.zip">Download Now</a></li>
+  </ul>
+</head>
+
+<body>
+  <a name="#about">
+    <h1>
+      About this Program
+    </h1>
+    <h2>What does this Program do?</h2>
+    <p> <a></a> This program uses <strong><a href="https://processing.org/">processing 3</a></strong> and <strong><a
+          href="http://www.micromind.com/processing/brc/BRCWebService.html">BRC</a></strong>, an
+      external site that creates browser-based controls for processing 3, to make Minesweeper. Minesweeper is a
+      videogame first designed in 1989 and came
+      preinstalled with earlier versions of Windows.
+    </p>
+    <h2>What is Minesweeper</h2>
+    <p><a></a>Minesweeper is a puzzle game with the objective of clearing a rectangular board containing hidden "mines"
+      or
+      bombs without detonating any of them. Each tile that is not a mine will have the number of mines surrounding it,
+      and
+      you must use those clues to uncover mines and other unmined tiles. You can win the game by openning all the
+      unmined tiles.
+    </p>
+    <h2>Bugs...Ew!</h2>
+    <p>
+      As of this moment, most gamebreaking bugs have been fixed. If you do find any remaining bugs, please email either
+      <a href="mailto: vwang30@stuy.edu">Vincent Wang</a> or <a href="mailto: tzhang30@stuy.edu">Thomas Zhang</a>.
+    </p>
+  </a>
+
+  <a name="#play">
+    <h1>
+      Play Now
+    </h1>
+    <h2>How to Play the Game</h2>
+    <p><a></a>To play the game, you have to make sure you have Processing 3 installed. You can go to <strong><a
+          href="https://processing.org/download">the processing website</a></strong> and select the correct
+      file for your OS. </p>
+    <p><a></a>Next, download and unzip <strong><a
+          href="https://github.com/definatelyVincentWang/Minesweeper/archive/refs/heads/main.zip">this file</a></strong>
+    </p>
+    <p><a></a>Open and run the "minesweeper.pde" file, and then go to <strong><a href="http://127.0.0.1:10002/">this
+          website</a></strong> to access the browser based controls</p>
+    <h2>The Controls</h2>
+    <p><a></a>To reveal a tile, you have to Left Click the tile. To flag a tile, you have to Right Click the tile.</p>
+    <p><a></a>To change the number of miles or tiles, use the sliders in the browser. You can also use the prebuilt
+      difficulties. You must click the restart button once you change these controls to activate the changes</p>
+    <p><a></a>Also in the BRC website, you will find a stopwatch and a list of Personal Best times for each difficulty.
+      When you win a game, your best time will be saved. Remember, faster is better. </p>
+  </a>
+  <a name="#FAQ">
+    <h2>
+      Frequently Asked Questions:
+    </h2>
+    <p class="q">How does it detect if you are clicking a tile or not?</p>
+    <p>By using the built in built in mousePressed and mouseButton variables, we can determine if the mouse is being pressed and which button is pressed.
+      All we need to do after is to check that the mouse is inside the tile.
+    </p>
+    <p class="q">How is the Personal High Scores saved?</p>
+    <p>The personal high scores are stored on your computer in .txt files called Easy, Medium, Hard, and Insane. When you select a difficulty,
+      The program uses the name of the difficulty to determine which file to change. We used the built in loadStrings() function to load everything in
+      a file into a String array and use the built in String.compareTo() function to check which time is less. Finally, we used the createWriter() function to write
+      the best score into the file.
+    </p>
+    <p class="q">How does the program randomly generate bombs?</p>
+    <p>
+      Before clicking anything, no bombs are generated. This is to make sure that when the user first presses a tile, it is not a bomb.
+      Once a tile is clicked however, the program will randomly generate an x and y coordinate and as long as those coordinates
+      are not the tile clicked or around the tile clicked, the program will set that tile to a bomb. Once all of the bombs are set, the program will go to each tile and search
+      around the tile to check how many bombs are around it.
+    </p>
+  </a>
+  <a name="#credits">
+    <h1>
+      Credits
+    </h1>
+    <p>This game was made by <strong>Vincent Wang and Thomas Zhang</strong>. Vincent Wang made the Tile class, the
+      reveal() function, and the checkNewRecord() function, while Thomas Zhang made the checkBombs() function, the
+      setup() function, and the draw() function.
+      Both contributed to the creation of this website.
+    </p>
+    <p>
+      Special thanks to ur beta testers: <strong>Kevin Huang and Kelvin Zhao</strong> for finding many gamebreaking bugs
+      and making other suggestions to help us bring you this game.
+    </p>
+  </a>
+</body>
+
+</html>
