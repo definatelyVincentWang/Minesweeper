@@ -1,10 +1,3 @@
-TYPE,NOTE,note
-note,LABEL,To change the settings
-note,LABEL,<a href="127.0.0.1:10002">Go to this site</a>
-
-TYPE,TEXT,username
-username,LABEL,First name
-
 TYPE,BUTTON,restart
 
 TYPE,MONITOR,mines
@@ -44,6 +37,7 @@ mines,STEP,1
 mines,VALUE,16
 
 TYPE,DROPDOWN,difficulty
+difficulty,LABEL,Difficulty Selection
 difficulty,OPTION,E,easy
 difficulty,OPTION,M,medium
 difficulty,OPTION,H,hard
