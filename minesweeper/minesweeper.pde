@@ -1,5 +1,5 @@
-class Tile { //<>//
-  int px,py;
+class Tile {
+  int px, py;
   float w;
   int bombs;
   float state;
@@ -7,7 +7,7 @@ class Tile { //<>//
   public Tile(int px, int py, float w, int bombs) {
     this.px = px;
     this.py = py;
-    
+
     this.w = w;
     this.state = 0;
     this.bombs = bombs;
@@ -25,11 +25,11 @@ class Tile { //<>//
   }
 
   private int[][] makeStates() {
-    // create a template for the numbers in the tiles //<>//
+    // create a template for the numbers in the tiles
     int[][] states = new int[totTiles][totTiles];
     for (int numBomb = 0; numBomb < totBombs; numBomb++) {
       int bombx = (int)random(states.length);
-      int bomby = (int)random(states[0].length); //<>//
+      int bomby = (int)random(states[0].length);
       states[bombx][bomby] = -1;
       while ((bombx == px && bomby == py) || checkBombs(px, py, states) != 0) {
         states[bombx][bomby] = 0;
@@ -42,15 +42,15 @@ class Tile { //<>//
   }
   /*
   When mouse button is released, mouseButton is not reset immediately, and will take ~3/20 seconds to reset. Therefore,
-  the draw function may be called multiple times while the mouseButton is not zero.
-  */
+   the draw function may be called multiple times while the mouseButton is not zero.
+   */
   public void clicked() {
     float x = px * width / totTiles;
     float y = py * height / totTiles;
     boolean meetingX = mouseX > x && mouseX < x + w;
     boolean meetingY = mouseY > y && mouseY < y + w;
     if (mousePressed && meetingX && meetingY) {
-      if (mouseButton == RIGHT && tiles[px][py].state != 2) { //<>//
+      if (mouseButton == RIGHT && tiles[px][py].state != 2) {
         flagged();
         mouseButton = 0;
         mousePressed = false;
@@ -109,7 +109,7 @@ class Tile { //<>//
 }
 
 Tile[][] tiles;
-color[] colors = new color[]{color(255), color(0, 0, 255), color(0, 255, 0), color(255, 255, 0), color(160, 32, 240), color(255, 183, 197), color(255), color(100), color(200)};
+color[] colors = new color[]{color(225), color(0, 0, 255), color(0, 255, 0), color(255, 255, 0), color(160, 32, 240), color(255, 183, 197), color(255), color(100), color(200)};
 boolean dead;
 boolean firstClick;
 int totTiles;
@@ -123,7 +123,6 @@ int debug = 0;
 void setup() {
   firstClick = true;
   dead = false;
-  username = "";
   won = false;
   frameCount = 0;
   size(1000, 1000);
@@ -167,34 +166,34 @@ void setup() {
   PFont font = createFont("arial", width / totTiles);
   textFont(font);
   textAlign(CENTER);
-  
+
   String[] easyLeaderboard = loadStrings("Easy.txt");
   String[] mediumLeaderboard = loadStrings("Medium.txt");
   String[] hardLeaderboard = loadStrings("Hard.txt");
   String[] insaneLeaderboard = loadStrings("Insane.txt");
   if (easyLeaderboard.length > 0) {
-    brcSetMonitor("pbe",easyLeaderboard[0]);
+    brcSetMonitor("pbe", easyLeaderboard[0]);
   }
   if (easyLeaderboard.length == 0) {
-    brcSetMonitor("pbe","No Personal Best on Record");
+    brcSetMonitor("pbe", "No Personal Best on Record");
   }
   if (mediumLeaderboard.length > 0) {
-    brcSetMonitor("pbm",mediumLeaderboard[0]);
+    brcSetMonitor("pbm", mediumLeaderboard[0]);
   }
   if (mediumLeaderboard.length == 0) {
-    brcSetMonitor("pbm","No Personal Best on Record");
+    brcSetMonitor("pbm", "No Personal Best on Record");
   }
   if (hardLeaderboard.length > 0) {
-    brcSetMonitor("pbh",hardLeaderboard[0]);
+    brcSetMonitor("pbh", hardLeaderboard[0]);
   }
   if (hardLeaderboard.length == 0) {
-    brcSetMonitor("pbh","No Personal Best on Record");
+    brcSetMonitor("pbh", "No Personal Best on Record");
   }
   if (insaneLeaderboard.length > 0) {
-    brcSetMonitor("pbi",insaneLeaderboard[0]);
+    brcSetMonitor("pbi", insaneLeaderboard[0]);
   }
   if (insaneLeaderboard.length == 0) {
-    brcSetMonitor("pbi","No Personal Best on Record");
+    brcSetMonitor("pbi", "No Personal Best on Record");
   }
 }
 void draw() {
@@ -206,17 +205,16 @@ void draw() {
     }
     return;
   }
-  if (username.length() == 0) {
-    username = brcValue("username");
-  }
   brc();
   String changed = brcChanged();
   if (changed.equals("restart")) {
     setup();
   }
-  int hours = (int)(frameCount / 60) / 60 / 60;
-  int minutes = (int)(frameCount / 60) / 60 % 60;
-  int seconds = (int)(frameCount / 60) / 60 / 60 % 60;
+  int seconds = (int)(frameCount/60);
+  int minutes = (int)seconds / 60;
+  seconds = seconds % 60;
+  int hours = minutes / 60;
+  minutes = minutes % 60;
   time = hours + ":" + minutes + ":" + seconds;
   brcSetMonitor("time", time);
 
@@ -238,7 +236,7 @@ void draw() {
   int numFlagged = 0;
   // flagging is an outside variable
   boolean flagging = false;
-  
+
   int tilesFound = 0;
   for (int posX = 0; posX < tiles.length; posX++) {
     for (int posY = 0; posY < tiles.length; posY++) {
@@ -253,35 +251,48 @@ void draw() {
     }
   }
   brcSetMonitor("mines", numFlagged);
-  
+
   if (tilesFound == totTiles * totTiles - totBombs) {
     PFont font = createFont("arial", 50);
     textFont(font);
+    textAlign(0);
     background(200);
-    text("Congradulations " + username + "for beating a " + difficulty + "minesweeper game. ",200,200);
-    text("Time to beat: " + time, 200,300);
+    text("Congradulations for beating a ", 200, 200);
+    text(difficulty + " minesweeper game. ", 200,300);
+    text("Time taken to beat: " + time, 200, 400);
     boolean place = checkNewRecord(time);
     if (place) {
-      text("New Record for " + difficulty + " difficulty.", 200,400);
+      text("New Record for " + difficulty + " difficulty.", 200, 500);
     }
+    won = true;
   }
 }
 
 boolean checkNewRecord(String time) {
+  if (difficulty.equals("Custom")) {
+    return false;
+  }
   String[] ar = loadStrings(difficulty + ".txt");
   PrintWriter output = createWriter(difficulty + ".txt");
-  String[] newAr = new String[1];
+  String[] newAr = {time};
+  if (ar.length <= 0) {
+    output.println(newAr[0]);
+    output.flush();
+    output.close();
+    return true;
+  }
   if (time.compareTo(ar[0]) < 0) {
     newAr[0] = time;
     output.println(newAr[0]);
     output.flush();
     output.close();
     return true;
+  } else {
+    output.println(ar[0]);
+    output.flush();
+    output.close();
+    return false;
   }
-  output.println(ar[0]);
-  output.flush();
-  output.close();
-  return false;
 }
 
 public void reveal(int posX, int posY, boolean[][] seen) {
