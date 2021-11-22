@@ -209,10 +209,10 @@ void setup() {
   
   if (brcValue("slow").equals("false")) {
     lowerGraphics = false;
-    println("slow");
+    //println("slow");
   } else {
     lowerGraphics = true;
-    println("Fast");
+    //println("Fast");
   }
   
   brcSetMonitor("flags",totBombs);
