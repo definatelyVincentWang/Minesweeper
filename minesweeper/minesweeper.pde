@@ -80,7 +80,37 @@ class Tile {
       }
     }
   }
-
+  public void slowDisplay() {
+    float x = px * width / totTiles;
+    float y = py * height / totTiles;
+    if (state == 0) {
+      fill(255);
+      square(x,y,w);
+    }
+    if (state == 1) {
+      float displayX = x + w / 2;
+      float displayY = y + 5 * w / 6;
+      fill(0);
+      text("F", displayX, displayY);
+    }
+    if (state == 2 && bombs != -1) {
+      float displayX = x + w / 2;
+      float displayY = y + 5 * w / 6;
+      fill(225);
+      square(x, y, w);
+      fill(colors[bombs]);
+      text(bombs, displayX, displayY);
+    }
+    if (state == 2 && bombs == -1) {
+      float displayX = x + w / 2;
+      float displayY = y + 5 * w / 6;
+      fill(255, 0, 0);
+      square(x, y, w);
+      fill(0);
+      text("X", displayX, displayY);
+      dead = true;
+    }
+  }
   public void display() {
     float x = px * width / totTiles;
     float y = py * height / totTiles;
@@ -103,7 +133,7 @@ class Tile {
     if (state == 2 && bombs == -1) {
       fill(255, 0, 0);
       square(x, y, w);
-      PImage mine = loadImage("mine.png");
+      PImage mine = loadImage(mineType);
       image(mine,x,y,w,w);
       dead = true;
     }
@@ -133,6 +163,8 @@ boolean won;
 String difficulty;
 String time;
 boolean place;
+String mineType;
+boolean lowerGraphics;
 
 void setup() {
   firstClick = true;
@@ -165,6 +197,21 @@ void setup() {
     totTiles = int(brcValue("size"));
     totBombs = int(brcValue("mines"));
     difficulty = "Custom";
+  }
+  
+  if (brcValue("mineType").equals("Bomb")) {
+     mineType = "bomb.jpg";
+  } else if (brcValue("mineType").equals("Mine")) {
+    mineType = "mine.png";
+  } else if (brcValue("mineType").equals("Smiley")) {
+    mineType = "smiley.jpg";
+  }
+  
+  if (brcChanged().equals("slow")) {
+    if (brcValue("slow").equals("true"))
+      lowerGraphics = true;
+    else
+      lowerGraphics = false;
   }
   
   brcSetMonitor("flags",totBombs);

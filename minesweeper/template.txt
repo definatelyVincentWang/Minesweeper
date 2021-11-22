@@ -1,5 +1,8 @@
 TYPE,BUTTON,restart
 
+TYPE,CHECKBOX,slow
+slow,LABEL,Lower Graphics
+
 TYPE,MONITOR,flags
 flags,LABEL,mines remaining
 
@@ -40,3 +43,9 @@ difficulty,OPTION,M,medium
 difficulty,OPTION,H,hard
 difficulty,OPTION,I,insane
 difficulty,OPTION,C,custom,selected
+
+TYPE,DROPDOWN,mineType
+mineType,LABEL,Mine Type
+mineType,OPTION,Bomb,Bomb
+mineType,OPTION,Mine,Mine,selected
+mineType,OPTION,Smiley,Smiley Face
