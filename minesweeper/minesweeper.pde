@@ -84,16 +84,17 @@ class Tile {
   public void display() {
     float x = px * width / totTiles;
     float y = py * height / totTiles;
-    fill(255);
-    square(x, y, w);
-    fill(0);
-    float displayX = x + w / 2;
-    float displayY = y + 5 * w / 6;
+    if (state == 0) {
+      PImage tile = loadImage("tile.png");
+      image(tile,x,y,w,w);
+    }
     if (state == 1) {
       PImage flag = loadImage("flag.png");
       image(flag,x,y,w,w);
     }
     if (state == 2 && bombs != -1) {
+      float displayX = x + w / 2;
+      float displayY = y + 5 * w / 6;
       fill(225);
       square(x, y, w);
       fill(colors[bombs]);
@@ -114,6 +115,7 @@ class Tile {
       fill(135,206,235);
       square(x,y,w); 
     } else {
+      fill(0,255,0);
       PImage flower = loadImage("flower.png");
       image(flower,x,y,w,w);
     }
@@ -130,7 +132,7 @@ String username;
 boolean won;
 String difficulty;
 String time;
-int debug = 0;
+boolean place;
 
 void setup() {
   firstClick = true;
@@ -216,6 +218,13 @@ void draw() {
         tiles[i][j].won();
       }
     }
+    fill(0,0,255);
+    text("Congradulations for beating a ", 200, 300);
+    text(difficulty + " minesweeper game. ", 200,400);
+    text("Time taken to beat: " + time, 200, 500);
+    if (place) {
+      text("New Record for " + difficulty + " difficulty.", 200, 600);
+    }
     brc();
     String changed = brcChanged();
     if (changed.equals("restart")) {
@@ -271,17 +280,7 @@ void draw() {
   brcSetMonitor("flags", totBombs - numFlagged);
 
   if (tilesFound == totTiles * totTiles - totBombs) {
-    PFont font = createFont("arial", 50);
-    textFont(font);
-    textAlign(0);
-    background(200);
-    text("Congradulations for beating a ", 200, 200);
-    text(difficulty + " minesweeper game. ", 200,300);
-    text("Time taken to beat: " + time, 200, 400);
-    boolean place = checkNewRecord(time);
-    if (place) {
-      text("New Record for " + difficulty + " difficulty.", 200, 500);
-    }
+    place = checkNewRecord(time);
     won = true;
   }
 }
