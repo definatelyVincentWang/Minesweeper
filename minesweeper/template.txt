@@ -1,13 +1,10 @@
 TYPE,BUTTON,restart
 
-TYPE,MONITOR,mines
-mines,LABEL,mines remaining
+TYPE,MONITOR,flags
+flags,LABEL,mines remaining
 
 TYPE,MONITOR,time
 time,LABEL,stopwatch
-
-TYPE,NOTE,pb
-pb,LABEL,personal bests
 
 TYPE,MONITOR,pbe
 pbe,LABEL,Easy Personal Best
@@ -23,7 +20,7 @@ pbi,LABEL,Insane Personal Best
 
 
 TYPE,RANGE,size
-size,LABEL, size x size tiles
+size,LABEL,number of tiles in width
 size,MIN,5
 size,MAX,30
 size,STEP,1

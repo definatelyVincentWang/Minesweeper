@@ -90,7 +90,8 @@ class Tile {
     float displayX = x + w / 2;
     float displayY = y + 5 * w / 6;
     if (state == 1) {
-      text("F", displayX, displayY);
+      PImage flag = loadImage("flag.png");
+      image(flag,x,y,w,w);
     }
     if (state == 2 && bombs != -1) {
       fill(225);
@@ -101,9 +102,20 @@ class Tile {
     if (state == 2 && bombs == -1) {
       fill(255, 0, 0);
       square(x, y, w);
-      fill(0);
-      text("X", displayX, displayY);
+      PImage mine = loadImage("mine.png");
+      image(mine,x,y,w,w);
       dead = true;
+    }
+  }
+  void won() {
+    float x = px * width / totTiles;
+    float y = py * height / totTiles;
+    if (bombs != -1) {
+      fill(135,206,235);
+      square(x,y,w); 
+    } else {
+      PImage flower = loadImage("flower.png");
+      image(flower,x,y,w,w);
     }
   }
 }
@@ -152,7 +164,8 @@ void setup() {
     totBombs = int(brcValue("mines"));
     difficulty = "Custom";
   }
-
+  
+  brcSetMonitor("flags",totBombs);
 
   // initialize the tiles
   tiles = new Tile[totTiles][totTiles];
@@ -198,6 +211,11 @@ void setup() {
 }
 void draw() {
   if (won) {
+    for (int i = 0; i < tiles.length; i++) {
+      for (int j = 0; j < tiles[0].length; j++) {
+        tiles[i][j].won();
+      }
+    }
     brc();
     String changed = brcChanged();
     if (changed.equals("restart")) {
@@ -250,7 +268,7 @@ void draw() {
       tiles[posX][posY].display();
     }
   }
-  brcSetMonitor("mines", numFlagged);
+  brcSetMonitor("flags", totBombs - numFlagged);
 
   if (tilesFound == totTiles * totTiles - totBombs) {
     PFont font = createFont("arial", 50);
