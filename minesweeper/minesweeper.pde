@@ -207,11 +207,12 @@ void setup() {
     mineType = "smiley.jpg";
   }
   
-  if (brcChanged().equals("slow")) {
-    if (brcValue("slow").equals("true"))
-      lowerGraphics = true;
-    else
-      lowerGraphics = false;
+  if (brcValue("slow").equals("false")) {
+    lowerGraphics = false;
+    println("slow");
+  } else {
+    lowerGraphics = true;
+    println("Fast");
   }
   
   brcSetMonitor("flags",totBombs);
@@ -257,6 +258,7 @@ void setup() {
   if (insaneLeaderboard.length == 0) {
     brcSetMonitor("pbi", "No Personal Best on Record");
   }
+  
 }
 void draw() {
   if (won) {
@@ -321,7 +323,11 @@ void draw() {
       if (tiles[posX][posY].state == 2) {
         tilesFound++;
       }
-      tiles[posX][posY].display();
+      if (lowerGraphics) {
+        tiles[posX][posY].slowDisplay();
+      } else {
+        tiles[posX][posY].display();
+      }
     }
   }
   brcSetMonitor("flags", totBombs - numFlagged);
