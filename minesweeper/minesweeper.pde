@@ -24,6 +24,7 @@
     state = 2;
   }
 
+  // HUGE PROGRAMMING BREAKING ERROR HERE. No infinite loop when bombs = tiles * tiles
   private int[][] makeStates() {
     // create a template for the numbers in the tiles
     int[][] states = new int[totTiles][totTiles];
