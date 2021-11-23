@@ -87,23 +87,19 @@ class Tile {
       fill(255);
       square(x,y,w);
     }
-    if (state == 1) {
-      float displayX = x + w / 2;
+    float displayX = x + w / 2;
       float displayY = y + 5 * w / 6;
+    if (state == 1) {
       fill(0);
       text("F", displayX, displayY);
     }
     if (state == 2 && bombs != -1) {
-      float displayX = x + w / 2;
-      float displayY = y + 5 * w / 6;
       fill(225);
       square(x, y, w);
       fill(colors[bombs]);
       text(bombs, displayX, displayY);
     }
     if (state == 2 && bombs == -1) {
-      float displayX = x + w / 2;
-      float displayY = y + 5 * w / 6;
       fill(255, 0, 0);
       square(x, y, w);
       fill(0);
@@ -115,11 +111,9 @@ class Tile {
     float x = px * width / totTiles;
     float y = py * height / totTiles;
     if (state == 0) {
-      PImage tile = loadImage("tile.png");
       image(tile,x,y,w,w);
     }
     if (state == 1) {
-      PImage flag = loadImage("flag.png");
       image(flag,x,y,w,w);
     }
     if (state == 2 && bombs != -1) {
@@ -133,7 +127,6 @@ class Tile {
     if (state == 2 && bombs == -1) {
       fill(255, 0, 0);
       square(x, y, w);
-      PImage mine = loadImage(mineType);
       image(mine,x,y,w,w);
       dead = true;
     }
@@ -146,11 +139,30 @@ class Tile {
       square(x,y,w); 
     } else {
       fill(0,255,0);
-      PImage flower = loadImage("flower.png");
       image(flower,x,y,w,w);
     }
   }
+  // developer cheat mode that doesn't change states
+  void cheatDraw() {
+    float x = px * width / totTiles;
+    float y = py * height / totTiles;
+    fill(225);
+    square(x,y,w);
+    if (bombs == -1) {
+      image(mine,x,y,w,w);
+    } else {
+      fill(colors[bombs]);
+      float displayX = x + w / 2;
+      float displayY = y + 5 * w / 6;
+      text(bombs, displayX, displayY);
+    }
+  }
 }
+
+PImage mine;
+PImage tile;
+PImage flag;
+PImage flower;
 
 Tile[][] tiles;
 color[] colors = new color[]{color(225), color(0, 0, 255), color(0, 255, 0), color(255, 255, 0), color(160, 32, 240), color(255, 183, 197), color(255), color(100), color(200)};
@@ -165,6 +177,7 @@ String time;
 boolean place;
 String mineType;
 boolean lowerGraphics;
+boolean cheatMode;
 
 void setup() {
   firstClick = true;
@@ -258,6 +271,10 @@ void setup() {
   if (insaneLeaderboard.length == 0) {
     brcSetMonitor("pbi", "No Personal Best on Record");
   }
+  mine = loadImage(mineType);
+  tile = loadImage("tile.png");
+  flag = loadImage("flag.png");
+  flower = loadImage("flower.png");
   
 }
 void draw() {
@@ -268,9 +285,9 @@ void draw() {
       }
     }
     fill(0,0,255);
-    text("Congradulations for beating a ", 200, 300);
-    text(difficulty + " minesweeper game. ", 200,400);
-    text("Time taken to beat: " + time, 200, 500);
+    text("Congradulations for beating a ", 400, 300);
+    text(difficulty + " minesweeper game. ", 400,400);
+    text("Time taken to beat: " + time, 400, 500);
     if (place) {
       text("New Record for " + difficulty + " difficulty.", 200, 600);
     }
@@ -331,10 +348,32 @@ void draw() {
     }
   }
   brcSetMonitor("flags", totBombs - numFlagged);
-
+  // dev cheat mode
+  if (cheatMode) {
+    for (int i = 0; i < tiles.length; i++) {
+      for (int j = 0; j < tiles.length; j++) {
+        tiles[i][j].cheatDraw();
+      }
+    }
+    return;
+  }
   if (tilesFound == totTiles * totTiles - totBombs) {
     place = checkNewRecord(time);
     won = true;
+  }
+}
+
+void keyPressed() {
+  if (key == ' ') {
+    cheatMode = true;
+    //println("Cheat mode on");
+  }
+}
+
+void keyReleased() {
+  if (key == ' ') {
+    cheatMode = false;
+    //println("Cheat mode off");
   }
 }
 
@@ -394,6 +433,22 @@ public void reveal(int posX, int posY, boolean[][] seen) {
 
 public int checkBombs(int posX, int posY, int[][] states) {
   int bombs = 0;
+  for (int x = -1; x <= 1; ++x) {
+    for (int y = -1; y <= 1; ++y) {
+      if (x == 0 && y == 0) {
+        continue;
+      }
+      if (posX + x >= states.length || posX + x < 0 || posY + y >= states.length || posY + y < 0) {
+        continue;
+      }
+      bombs += states[posX + x][posY + y] == -1 ? 1 : 0;
+    }
+  }
+  return bombs;
+}
+
+/*
+  int bombs = 0;
   if (posX - 1 >= 0 && states[posX - 1][posY] == -1) {
     bombs++;
   }
@@ -419,4 +474,4 @@ public int checkBombs(int posX, int posY, int[][] states) {
     bombs++;
   }
   return bombs;
-}
+*/
