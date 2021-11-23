@@ -23,7 +23,6 @@
   public void displayed() {
     state = 2;
   }
-
   // HUGE PROGRAMMING BREAKING ERROR HERE. No infinite loop when bombs = tiles * tiles
   private int[][] makeStates() {
     // create a template for the numbers in the tiles
@@ -164,24 +163,39 @@
   }
 }
 
+// initialize the images
 PImage mine;
 PImage tile;
 PImage flag;
 PImage flower;
 
+// array of tiles
 Tile[][] tiles;
+
+// array of colors
 color[] colors = new color[]{color(225), color(0, 0, 255), color(0, 255, 0), color(255, 255, 0), color(160, 32, 240), color(255, 183, 197), color(255), color(100), color(200)};
+
+// lost/won
 boolean dead;
+boolean won;
+
+// Minesweeper functionality: Only gen mines when first clicked
 boolean firstClick;
+
+// BRC browser controls
 int totTiles;
 int totBombs;
-String username;
-boolean won;
 String difficulty;
+// timer
 String time;
+// if new record or not
 boolean place;
+// mine type: smiley, mine, bomb
 String mineType;
+// lower the graphics (for worse computers)
 boolean lowerGraphics;
+
+// developer cheat mode (space bar to show mines)
 boolean cheatMode;
 
 void setup() {
@@ -214,7 +228,11 @@ void setup() {
   } else {
     totTiles = int(brcValue("size"));
     totBombs = int(brcValue("mines"));
-    difficulty = "custom";
+    difficulty = "Custom";
+  }
+  
+  if (totTiles * totTiles <= totBombs) {
+    won = true;
   }
   
   if (brcValue("mineType").equals("Bomb")) {
@@ -235,7 +253,7 @@ void setup() {
   
   brcSetMonitor("flags",totBombs);
 
-  // initialize the tiles
+  // initialize the tiles without mines
   tiles = new Tile[totTiles][totTiles];
   for (int x = 0; x < tiles.length; x++) {
     for (int y = 0; y < tiles[0].length; y++) {
@@ -247,7 +265,8 @@ void setup() {
   PFont font = createFont("arial", width / totTiles);
   textFont(font);
   textAlign(CENTER);
-
+  
+  // initialize the high scores
   String[] easyLeaderboard = loadStrings("Easy.txt");
   String[] mediumLeaderboard = loadStrings("Medium.txt");
   String[] hardLeaderboard = loadStrings("Hard.txt");
@@ -276,6 +295,8 @@ void setup() {
   if (insaneLeaderboard.length == 0) {
     brcSetMonitor("pbi", "No Personal Best on Record");
   }
+  
+  // load the images
   mine = loadImage(mineType);
   tile = loadImage("tile.png");
   flag = loadImage("flag.png");
@@ -325,15 +346,11 @@ void draw() {
     }
     return;
   }
-
-  // reset is an outside variable
   boolean reset = false;
   if (reset) {
     setup();
   }
   int numFlagged = 0;
-  // flagging is an outside variable
-  boolean flagging = false;
 
   int tilesFound = 0;
   for (int posX = 0; posX < tiles.length; posX++) {
@@ -362,12 +379,14 @@ void draw() {
     }
     return;
   }
+  // winning condition
   if (tilesFound == totTiles * totTiles - totBombs) {
     place = checkNewRecord(time);
     won = true;
   }
 }
 
+// activate dev cheat mode
 void keyPressed() {
   if (key == ' ') {
     cheatMode = true;
@@ -375,6 +394,7 @@ void keyPressed() {
   }
 }
 
+// deactivate dev cheat mode
 void keyReleased() {
   if (key == ' ') {
     cheatMode = false;
@@ -382,8 +402,9 @@ void keyReleased() {
   }
 }
 
+// Check if you got a new record
 boolean checkNewRecord(String time) {
-  if (difficulty.equals("custom")) {
+  if (difficulty.equals("Custom")) {
     return false;
   }
   String[] ar = loadStrings(difficulty + ".txt");
@@ -409,6 +430,7 @@ boolean checkNewRecord(String time) {
   }
 }
 
+// recursive function to reveal all blocks that are zero
 public void reveal(int posX, int posY, boolean[][] seen) {
   seen[posX][posY] = true;
   if (tiles[posX][posY].bombs == 0) {
@@ -436,6 +458,7 @@ public void reveal(int posX, int posY, boolean[][] seen) {
   }
 }
 
+// Check how many bombs are nearby (posX, posY)
 public int checkBombs(int posX, int posY, int[][] states) {
   int bombs = 0;
   for (int x = -1; x <= 1; ++x) {
@@ -452,7 +475,8 @@ public int checkBombs(int posX, int posY, int[][] states) {
   return bombs;
 }
 
-/*
+// worse version of check bombs function
+public int worseCheckBombs(int posX, int posY, int[][] states) {
   int bombs = 0;
   if (posX - 1 >= 0 && states[posX - 1][posY] == -1) {
     bombs++;
@@ -479,4 +503,4 @@ public int checkBombs(int posX, int posY, int[][] states) {
     bombs++;
   }
   return bombs;
-*/
+}
