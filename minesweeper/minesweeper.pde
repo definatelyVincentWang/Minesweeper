@@ -214,7 +214,7 @@ void setup() {
   } else {
     totTiles = int(brcValue("size"));
     totBombs = int(brcValue("mines"));
-    difficulty = "Custom";
+    difficulty = "custom";
   }
   
   if (brcValue("mineType").equals("Bomb")) {
@@ -290,7 +290,7 @@ void draw() {
       }
     }
     fill(0,0,255);
-    text("Congradulations for beating a ", 500, 400);
+    text("Congratulations for beating a ", 500, 400);
     text(difficulty + " minesweeper game. ", 500,500);
     text("Time taken to beat: " + time, 500, 600);
     if (place) {
@@ -383,7 +383,7 @@ void keyReleased() {
 }
 
 boolean checkNewRecord(String time) {
-  if (difficulty.equals("Custom")) {
+  if (difficulty.equals("custom")) {
     return false;
   }
   String[] ar = loadStrings(difficulty + ".txt");
