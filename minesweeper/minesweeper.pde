@@ -1,4 +1,4 @@
-class Tile {
+  class Tile {
   int px, py;
   float w;
   int bombs;
@@ -30,6 +30,10 @@ class Tile {
     for (int numBomb = 0; numBomb < totBombs; numBomb++) {
       int bombx = (int)random(states.length);
       int bomby = (int)random(states[0].length);
+      while (states[bombx][bomby] == -1) {
+        bombx = (int)random(states.length);
+        bomby = (int)random(states[0].length);
+      }
       states[bombx][bomby] = -1;
       while ((bombx == px && bomby == py) || checkBombs(px, py, states) != 0) {
         states[bombx][bomby] = 0;
@@ -285,11 +289,11 @@ void draw() {
       }
     }
     fill(0,0,255);
-    text("Congradulations for beating a ", 400, 300);
-    text(difficulty + " minesweeper game. ", 400,400);
-    text("Time taken to beat: " + time, 400, 500);
+    text("Congradulations for beating a ", 500, 400);
+    text(difficulty + " minesweeper game. ", 500,500);
+    text("Time taken to beat: " + time, 500, 600);
     if (place) {
-      text("New Record for " + difficulty + " difficulty.", 200, 600);
+      text("New Record for " + difficulty + " difficulty.", 200, 700);
     }
     brc();
     String changed = brcChanged();
