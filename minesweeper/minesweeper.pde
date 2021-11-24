@@ -133,6 +133,8 @@
       square(x, y, w);
       image(mine,x,y,w,w);
       dead = true;
+      deadX = px;
+      deadY = py;
     }
   }
   void won() {
@@ -161,9 +163,18 @@
       text(bombs, displayX, displayY);
     }
   }
+  
+  void bombExplodeOutward() {
+    float x = px * width / totTiles;
+    float y = py * height / totTiles;
+    fill(255,0,0);
+    square(x,y,w);
+    image(bombExplosion,x,y,w,w);
+  }
 }
 
 // initialize the images
+PImage bombExplosion;
 PImage mine;
 PImage tile;
 PImage flag;
@@ -178,6 +189,8 @@ color[] colors = new color[]{color(225), color(0, 0, 255), color(0, 255, 0), col
 // lost/won
 boolean dead;
 boolean won;
+int deadX;
+int deadY;
 
 // Minesweeper functionality: Only gen mines when first clicked
 boolean firstClick;
@@ -301,7 +314,7 @@ void setup() {
   tile = loadImage("tile.png");
   flag = loadImage("flag.png");
   flower = loadImage("flower.png");
-  
+  bombExplosion = loadImage("bombExplosion.png");
 }
 void draw() {
   if (won) {
@@ -338,12 +351,16 @@ void draw() {
   brcSetMonitor("time", time);
 
   if (dead) {
-    for (int px = 0; px < tiles.length; px++) {
-      for (int py = 0; py < tiles.length; py++) {
-        tiles[px][py].state = 2;
-        tiles[px][py].display();
+    for (int posX = 0; posX < tiles.length; posX++) {
+      for (int posY = 0; posY < tiles[0].length; posY++) {
+        if (mineType.equals("Bomb")) {
+          tiles[posX][posY].bombExplodeOutward();
+        } else {
+          tiles[posX][posY].state = 2;
+          tiles[posX][posY].display();
+        }
       }
-    }
+    } //<>//
     return;
   }
   boolean reset = false;
@@ -458,8 +475,7 @@ public void reveal(int posX, int posY, boolean[][] seen) {
   }
 }
 
-// Check how many bombs are nearby (posX, posY)
-public int checkBombs(int posX, int posY, int[][] states) {
+int checkBombs(int posX, int posY, int[][] states) {
   int bombs = 0;
   for (int x = -1; x <= 1; ++x) {
     for (int y = -1; y <= 1; ++y) {
@@ -471,36 +487,6 @@ public int checkBombs(int posX, int posY, int[][] states) {
       }
       bombs += states[posX + x][posY + y] == -1 ? 1 : 0;
     }
-  }
-  return bombs;
-}
-
-// worse version of check bombs function
-public int worseCheckBombs(int posX, int posY, int[][] states) {
-  int bombs = 0;
-  if (posX - 1 >= 0 && states[posX - 1][posY] == -1) {
-    bombs++;
-  }
-  if (posY - 1 >= 0 && states[posX][posY - 1] == -1) {
-    bombs++;
-  }
-  if (posX + 1 < states.length && states[posX + 1][posY] == -1) {
-    bombs++;
-  }
-  if (posY + 1 < states.length && states[posX][posY + 1] == -1) {
-    bombs++;
-  }
-  if (posX + 1 < states.length && posY + 1 < states.length && states[posX + 1][posY + 1] == -1) {
-    bombs++;
-  }
-  if (posX - 1 >= 0 && posY - 1 >= 0 && states[posX - 1][posY - 1] == -1) {
-    bombs++;
-  }
-  if (posX + 1 < states.length && posY - 1 >= 0 && states[posX + 1][posY - 1] == -1) {  
-    bombs++;
-  }
-  if (posX - 1 >= 0 && posY + 1 < states.length && states[posX-1][posY+1] == -1) {
-    bombs++;
   }
   return bombs;
 }
