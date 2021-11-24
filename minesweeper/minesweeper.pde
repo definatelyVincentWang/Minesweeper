@@ -1,4 +1,4 @@
-  class Tile {
+  class Tile { //<>// //<>// //<>//
   int px, py;
   float w;
   int bombs;
@@ -323,12 +323,15 @@ void draw() {
         tiles[i][j].won();
       }
     }
+    PFont font = createFont("arial", 50);
+    textFont(font);
+    textAlign(CENTER);
     fill(0,0,255);
     text("Congratulations for beating a ", 500, 400);
     text(difficulty + " minesweeper game. ", 500,500);
     text("Time taken to beat: " + time, 500, 600);
     if (place) {
-      text("New Record for " + difficulty + " difficulty.", 200, 700);
+      text("New Record for " + difficulty + " difficulty.", 500, 700);
     }
     brc();
     String changed = brcChanged();
@@ -433,18 +436,38 @@ boolean checkNewRecord(String time) {
     output.close();
     return true;
   }
-  if (time.compareTo(ar[0]) < 0) {
+  if (compareTo(newAr[0],ar[0])) {
     newAr[0] = time;
     output.println(newAr[0]);
+    println("New Record");
     output.flush();
     output.close();
     return true;
   } else {
     output.println(ar[0]);
+    println("No new record");
     output.flush();
     output.close();
     return false;
   }
+}
+
+boolean compareTo(String i, String j) {
+  int pos = 0;
+  for (; pos < i.length(); pos++) {
+    if (pos >= j.length()) {
+      return false;
+    }
+    if (i.charAt(pos) > j.charAt(pos)) {
+      return false;
+    } else if (i.charAt(pos) < j.charAt(pos)) {
+      return true;
+    }
+  }
+  if (j.length() > i.length()) {
+    return true;
+  }
+  return false;
 }
 
 // recursive function to reveal all blocks that are zero
